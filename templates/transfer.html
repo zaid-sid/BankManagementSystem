@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Transfer — SecureBank{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Transfer Funds</h2>
+    <p>Your balance: ${{ "%.2f"|format(account['balance']) }}</p>
+</div>
+
+<div class="form-card">
+    <form method="POST">
+        <div class="form-group">
+            <label>Recipient Account Number</label>
+            <input type="text" name="to_account" required placeholder="ACC00000001">
+        </div>
+        <div class="form-group">
+            <label>Amount</label>
+            <input type="number" name="amount" min="0.01" step="0.01" required placeholder="0.00">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Send Transfer</button>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-full">Cancel</a>
+    </form>
+</div>
+{% endblock %}

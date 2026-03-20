@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Transactions — SecureBank{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Transaction History</h2>
+    <p>Account: {{ account['account_number'] }}</p>
+</div>
+
+<div class="table-card">
+    {% if transactions %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for txn in transactions %}
+            <tr>
+                <td>{{ txn['created_at'] }}</td>
+                <td>
+                    <span class="badge badge-{{ 'success' if txn['type'] in ['DEPOSIT', 'TRANSFER IN'] else 'danger' }}">
+                        {{ txn['type'] }}
+                    </span>
+                </td>
+                <td>{{ txn['description'] }}</td>
+                <td class="{{ 'amount-positive' if txn['type'] in ['DEPOSIT', 'TRANSFER IN'] else 'amount-negative' }}">
+                    {{ '+' if txn['type'] in ['DEPOSIT', 'TRANSFER IN'] else '-' }}${{ "%.2f"|format(txn['amount']) }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <p>No transactions yet.</p>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Make your first deposit</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
